@@ -9,82 +9,87 @@ class SList:
         self._head = None
         self._size = 0
         self._iterator = 0
-        self._currentNode = self.SListNode()
 
     '''Insert a new value in the list. Maintain nondecreasing ordering of elements'''
     def insert(self, value):
         newNode = self.SListNode(value)
+        currentNode = self.SListNode()
         if self._head != None:
-            self._currentNode.next = self._head
-            for i in range(self._size):
-                if self._currentNode.next == None:
-                    print("push back")
-                    self._currentNode.next = newNode
+            currentNode.next = self._head
+            while True:
+                if not currentNode.next:
+                    currentNode.next = newNode
                     break
                 else:
-                    print("hi")
-                    if value > self._currentNode.next.value:
-                        print("iterating")
-                        self._currentNode.next = self._currentNode.next
-                        print(self._currentNode)
-                        print(self._currentNode.next)
+                    if value > currentNode.next.value:
+                        currentNode = currentNode.next
                     else:
-                        print("inserted")
-                        newNode.next = self._currentNode.next
-                        self._currentNode.next = newNode
+                        print(newNode.value)
+                        newNode.next = currentNode.next
+                        currentNode.next = newNode
+                        break
         else:
             self._head = newNode
         self._size += 1
     
     '''Search for a value in the list, return it if found, None otherwise'''
     def find(self, value):
-        self._currentNode.next = self._head
+        currentNode = self.SListNode()
+        currentNode.next = self._head
         while True:
-            if self._currentNode.next.value == value:
-                return self._currentNode.next
+            if currentNode.next:
+                if currentNode.next.value == value:
+                    return currentNode.next
+                else:
+                    currentNode.next = currentNode.next.next
             else:
                 return None
+                
 
     '''Remove the first occurance of value.'''
     def remove(self, value):
-        self._currentNode.next = self._head
+        currentNode = self.SListNode()
+        currentNode.next = self._head
         while True:
-            if value == self._currentNode.next.value:
-                self._currentNode.next = self._currentNode.next.next
-                self._size -= 1
-                return True
-            else:
-                if self._currentNode.next != None:
-                    self._currentNode = self._currentNode.next
+            if currentNode.next:
+                if value == currentNode.next.value:
+                    currentNode.next = currentNode.next.next
+                    self._size -= 1
+                    return True
                 else:
-                    return False
+                    if currentNode.next != None:
+                        currentNode = currentNode.next
+                    else:
+                        return False
+            else:
+                return False
 
     '''Remove all instances of value'''
     def remove_all(self, value):
-        self._currentNode.next = self._head
+        currentNode = self.SListNode()
+        currentNode.next = self._head
         while True:
-            if value == self._currentNode.next.value:
-                self._currentNode.next = self._currentNode.next.next
-                self._size -= 1
-            else:
-                if self._currentNode.next != None:
-                    self._currentNode = self._currentNode.next
+            if currentNode.next:
+                if value == currentNode.next.value:
+                    currentNode.next = currentNode.next.next
+                    self._size -= 1
                 else:
-                    break
-
+                    currentNode = currentNode.next
+            else:
+                break
+            
     '''Convert the list to a string and return it'''
     def __str__(self):
-        self._currentNode.next = self._head
+        currentNode = self.SListNode()
+        currentNode.next = self._head
         contentString = "["
         if self._head != None:
             for i in range(self._size):
-                contentString += str(self._currentNode.next.value)
-                if self._currentNode.next != None:
-                    contentString += ', '
-                print("moving node")
-                print(self._currentNode.value)
-                print(self._currentNode.next.value)
-                self._currentNode = self._currentNode.next
+                if currentNode.next:
+                    contentString += str(currentNode.next.value)
+                    if currentNode.next.next != None:
+                        contentString += ', '
+                    currentNode = currentNode.next
         contentString += "]"
         return contentString
 
@@ -94,16 +99,21 @@ class SList:
         return self
 
     def __next__(self):
-        nextIteration = self._iterator
-        self._iterator += 1
-        return nextIteration
+        if self._iterator < self._size:
+            nextIteration = self._iterator
+            self._iterator += 1
+            return nextIteration
+        else:
+            raise StopIteration
 
     '''Return the item at the given index, or throw an exception if invalid index'''
     def __getitem__(self, index):
-        self._currentNode.next = self._head
+        currentNode = self.SListNode()
+        currentNode.next = self._head
         for i in range(index - 1):
-            self._currentNode = self._currentNode.next
-        return self._currentNode.next
+            currentNode = currentNode.next
+        if currentNode:
+            return currentNode.value
 
     def size(self):
         return self._size

@@ -21,16 +21,16 @@ class Course:
             self._grade = grade
 
     def number(self):
-        return self._number
+        return int(self._number)
 
     def name(self):
         return self._name
 
     def credit_hr(self):
-        return self._credit
+        return float(self._credit)
 
     def grade(self):
-        return self._grade
+        return float(self._grade)
 
     def __str__(self):
         return f"cs{self._number} {self._name} Grade: {self._grade} Credit Hours: {self._credit}"

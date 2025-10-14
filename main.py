@@ -17,19 +17,26 @@ def is_sorted(lyst):
             return False
     return True
 
-def main():
-    newList = SList()
 
-    newList.insert(1)
-    print(1)
-    newList.insert(6)
-    print(2)
-    newList.insert(3)
-    print(3)
-    newList.insert(10)
-    print(4)
+def main():
+    course = Course()
+    print(course.grade())
+
+    sluts = SList()
+
+    sluts.insert(10)
+    sluts.insert(11)
+    sluts.insert(9)
+    sluts.insert(20)
+    sluts.insert(9)
+
+    print(sluts)
+
+
+    print(sluts.size())
     
-    print(newList)
+    for i in sluts:
+        print(sluts[i])
 
   
 if __name__ == "__main__":
