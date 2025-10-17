@@ -19,15 +19,20 @@ class SList:
             while True:
                 if not currentNode.next:
                     currentNode.next = newNode
+                    print('pushback')
                     break
                 else:
-                    if value > currentNode.next.value:
-                        currentNode = currentNode.next
+                    if self._head.value > value:
+                        newNode.next = self._head
+                        self._head = newNode
+                        print('new head')
                     else:
-                        print(newNode.value)
-                        newNode.next = currentNode.next
-                        currentNode.next = newNode
-                        break
+                        if value > currentNode.next.value:
+                            currentNode = currentNode.next
+                        else:
+                            newNode.next = currentNode.next
+                            currentNode.next = newNode
+                            break
         else:
             self._head = newNode
         self._size += 1
@@ -110,10 +115,15 @@ class SList:
     def __getitem__(self, index):
         currentNode = self.SListNode()
         currentNode.next = self._head
-        for i in range(index - 1):
-            currentNode = currentNode.next
-        if currentNode:
-            return currentNode.value
+        if index >= self._size:
+            raise ValueError("Chosen index is too large")
+        elif index < 0:
+            raise ValueError("Chosen index is negative")
+        else:
+            for i in range(index - 1):
+                currentNode = currentNode.next
+            if currentNode:
+                return currentNode.value
 
     def size(self):
         return self._size
